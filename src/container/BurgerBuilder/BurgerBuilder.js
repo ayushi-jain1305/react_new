@@ -3,7 +3,8 @@ import Aux from '../../hoc/Auxiliary';
 import Burger from '../../components/Burger/Burger';
 import BuildControlls from '../../components/Burger/BuildControlls/BuildControlls'
 import Modal from '../../components/Burger/UI/Modal/Modal';
-import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary'
+import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
+import axios from '../../axios-orders';
 
 const INGREDIENT_PRICE = {
     cheese : 30 , 
@@ -75,9 +76,26 @@ class BurgerBuilder extends Component {
         })
     }
     purchaseContinuehandler = () => {
-       alert('continuee');
+    //    alert('continuee');
+        const finalOrder = {
+            ingredients: this.state.ingredients,
+            price: this.state.totalPrice,
+            customer : {
+                name: 'Ayushi',
+                address : 'xyzz',
+                email: 'test@test.com',
+                payment: 'cod'
+            }
+        }
+        axios.post('/orders.json' ,finalOrder )
+            .then(response => {
+                return console.log(response.data)
+            })
+            .catch(error => {
+                return console.log(error)
+            })                     
     }
-
+    //.json is used for firebase 
     render(){
         const disabledInfo = {
             ...this.state.ingredients
