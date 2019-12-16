@@ -1,0 +1,16 @@
+.ContactName{
+    width:80%;
+    margin:0 auto 30px;
+    text-align: center;
+    box-shadow: 0 2px 3px #ccc;
+    border: 1px solid #eee;
+}
+.ContactName input {
+    display: table;
+    margin:10px auto;
+}
+@media(min-width:600px){
+    .ContactName{
+        width:500px;
+    }
+}

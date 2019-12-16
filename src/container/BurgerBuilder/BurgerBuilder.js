@@ -26,7 +26,7 @@ class BurgerBuilder extends Component {
     }
 
     componentDidMount() {
-        axios.get('https://burger-project-react-4c33a.firebaseio.com/ingredients.json')
+        axios.get('/ingredients.json')
             .then(response => {
                 this.setState({ingredients : response.data});
             })
@@ -84,37 +84,48 @@ class BurgerBuilder extends Component {
         })
     }
     purchaseContinuehandler = () => {
-        console.log('continuee');
-        this.setState({ loading: true});
-        const finalOrder = {
-            ingredients: this.state.ingredients,
-            price: this.state.totalPrice,
-            customer : {
-                name: 'Ayushi',
-                address : 'xyzz',
-                email: 'test@test.com',
-                payment: 'cod'
-            }
-        }
-        axios.post('orders.json' ,finalOrder )
-            .then(response => {
-                return(
-                    //console.log('fgtrgdg')
-                    this.setState({
-                        loading: false,
-                        purchasing :false
+         console.log('continuee');
 
-                    })
-                ); 
-            })
-            .catch(error => {
-                return(
-                    this.setState({
-                        loading: false,
-                        purchasing :false
-                    })
-                );
-            })                     
+         const queryparam = [];
+         for(let i in this.state.ingredients){
+            queryparam.push(encodeURIComponent(i) + '=' + encodeURIComponent(this.state.ingredients[i])); // encodeURIComponent() is used to make string for urm i.e to remove spaces
+         }
+         queryparam.push('price=' + this.state.totalPrice)
+         const queryString = queryparam.join('&');
+         this.props.history.push({
+             pathname : '/checkout',
+             search: '?' + queryString
+         });
+        // this.setState({ loading: true});
+        // const finalOrder = {
+        //     ingredients: this.state.ingredients,
+        //     price: this.state.totalPrice,
+        //     customer : {
+        //         name: 'Ayushi',
+        //         address : 'xyzz',
+        //         email: 'test@test.com',
+        //         payment: 'cod'
+        //     }
+        // }
+        // axios.post('orders.json' ,finalOrder )
+        //     .then(response => {
+        //         return(
+        //             //console.log('fgtrgdg')
+        //             this.setState({
+        //                 loading: false,
+        //                 purchasing :false
+
+        //             })
+        //         ); 
+        //     })
+        //     .catch(error => {
+        //         return(
+        //             this.setState({
+        //                 loading: false,
+        //                 purchasing :false
+        //             })
+        //         );
+        //     })                     
     }
     //.json is used for firebase 
     render(){
