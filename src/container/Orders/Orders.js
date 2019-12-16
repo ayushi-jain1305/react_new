@@ -27,7 +27,7 @@ class Orders extends Component {
     }
 
     render(){
-        let orders = this.state.ordersList.map(orderitem => (
+        let orders = this.state.ordersList.reverse().map(orderitem => (
             <Order key={orderitem.id} ingredients={orderitem.ingredients} price={orderitem.price} />
         ))
         return(
