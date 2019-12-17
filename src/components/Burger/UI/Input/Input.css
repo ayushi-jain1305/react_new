@@ -6,8 +6,10 @@
 
 .Label{
 	font-weight: bold;
-	display: block;
-	margin-bottom:8px;
+    display: inline-block;
+    margin-bottom: 8px;
+    width: 30%;
+    text-align: left;
 }
 
 .InputElement {
@@ -15,12 +17,15 @@
 	border:1px solid #ccc;
 	padding: 6px 10px;
 	outline:none;
-	display: block;
-	width:100%;
+	display: inline-block;
+	width:70%;
 	box-sizing: border-box;
 }
 
 .InputElement:focus {
 	background-color: #ccc;
 	outline:none;
+}
+.error{
+	border:1px solid red;
 }
