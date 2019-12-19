@@ -3,7 +3,8 @@ import Button from '../../../components/Burger/UI/Button/Button';
 import classes from './ContactData.css'
 import axios from '../../../axios-orders';
 import Spinner from '../../../components/Burger/UI/Spinner/Spinner';
-import Input from '../../../components/Burger/UI/Input/Input'
+import Input from '../../../components/Burger/UI/Input/Input';
+import { connect } from 'react-redux';
 
 class ContactData extends Component{
     state={
@@ -115,7 +116,7 @@ class ContactData extends Component{
         //     })
         // }
         const finalOrder = {
-            ingredients: this.props.ingredients,
+            ingredients: this.props.ingr,
             price: this.props.price,
             orderData : contactDetail
         }
@@ -215,4 +216,11 @@ class ContactData extends Component{
     }
 }
 
-export default ContactData;
+const mapStateToProps = state => {
+    return{
+        ingr: state.ingredients,
+        price:state.totalPrice
+    };
+}
+
+export default connect(mapStateToProps)(ContactData);
