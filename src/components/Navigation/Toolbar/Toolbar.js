@@ -10,7 +10,7 @@ const Toolbar = (props) => {
             <DrawerToggler menuClose={props.menuClose}></DrawerToggler>
             <Logo />
             <nav className={classes.MobileNone}>
-                <NavigationItems></NavigationItems>
+                <NavigationItems isAuth={props.isAuth} ></NavigationItems>
             </nav>
         </header>
     );

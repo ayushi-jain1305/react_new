@@ -5,6 +5,8 @@ import axios from '../../../axios-orders';
 import Spinner from '../../../components/Burger/UI/Spinner/Spinner';
 import Input from '../../../components/Burger/UI/Input/Input';
 import { connect } from 'react-redux';
+import withErrorhandler from '../../../hoc/withErrorhandler/withErrorhandler';
+import * as actionHandler from '../../../store/actions/indexAct'
 
 class ContactData extends Component{
     state={
@@ -71,7 +73,8 @@ class ContactData extends Component{
                 },
                 value:'',
                 validation : {
-                    required:true
+                    required:true,
+                    isEmail : true
                 },
                 valid: false,
                 touched: false
@@ -99,7 +102,7 @@ class ContactData extends Component{
             },
         },
         isFormValid : false,
-        loading: false
+        // loading: false
     }
 
     orderHandler = (event) => {
@@ -120,16 +123,20 @@ class ContactData extends Component{
             price: this.props.price,
             orderData : contactDetail
         }
-        axios.post('/orders.json' ,finalOrder )
-            .then(response => {
-                    //console.log('fgtrgdg')
-                    this.setState({loading: false});
-                    this.props.history.push('/orders');
+        const path = this.props.history;
+
+        this.props.onBurgerOrder(finalOrder , path , this.props.token);
+
+        // axios.post('/orders.json' ,finalOrder )
+        //     .then(response => {
+        //             //console.log('fgtrgdg')
+        //             this.setState({loading: false});
+        //             this.props.history.push('/orders');
                
-            })
-            .catch(error => {
-                    this.setState({ loading: false })
-            })  
+        //     })
+        //     .catch(error => {
+        //             this.setState({ loading: false })
+        //     })  
     }
 
     checkValidity(value , rules ){
@@ -144,6 +151,14 @@ class ContactData extends Component{
             }
             if(rules.maxlength){
                 isValid = value.length <= rules.maxlength  && isValid;
+            }
+            if(rules.isEmail){
+                const pattern = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+                isValid = pattern.test(value) && isValid;
+            }
+            if(rules.isNumeric){
+                const pattern = /^\d+$/;
+                isValid = pattern.test(value) && isValid;
             }
         }
        
@@ -203,7 +218,7 @@ class ContactData extends Component{
                 <Button disableBtn={!this.state.isFormValid} btnClass="Success" clicked={this.orderHandler} >ORDER</Button>
             </form>
         );
-        if(this.state.loading){
+        if(this.props.loading){
             form = <Spinner />
         }
 
@@ -218,9 +233,17 @@ class ContactData extends Component{
 
 const mapStateToProps = state => {
     return{
-        ingr: state.ingredients,
-        price:state.totalPrice
+        ingr: state.bbRed.ingredients,
+        price: state.bbRed.totalPrice ,
+        loading: state.orderRed.loading,
+        token : state.authRed.token
     };
 }
 
-export default connect(mapStateToProps)(ContactData);
+const mapDispatchToProps = dispatch => {
+    return {
+        onBurgerOrder: (orderData , path , token ) => { dispatch(actionHandler.purchaseBurger(orderData , path , token)) }
+    }
+}
+
+export default connect(mapStateToProps , mapDispatchToProps)(withErrorhandler(ContactData , axios));
