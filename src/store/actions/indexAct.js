@@ -11,5 +11,7 @@ export {
 
 export {
 	authInit,
-	authLogout
+	authLogout,
+	setAuthRedirectPath,
+	authCheckStatus
 } from './authAct'

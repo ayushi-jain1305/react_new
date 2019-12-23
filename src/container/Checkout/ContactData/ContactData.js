@@ -121,7 +121,8 @@ class ContactData extends Component{
         const finalOrder = {
             ingredients: this.props.ingr,
             price: this.props.price,
-            orderData : contactDetail
+            orderData : contactDetail,
+            userId: this.props.userId
         }
         const path = this.props.history;
 
@@ -236,7 +237,8 @@ const mapStateToProps = state => {
         ingr: state.bbRed.ingredients,
         price: state.bbRed.totalPrice ,
         loading: state.orderRed.loading,
-        token : state.authRed.token
+        token : state.authRed.token,
+        userId: state.authRed.userId
     };
 }
 

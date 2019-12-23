@@ -57,10 +57,11 @@ export const fetchOrdersFails = (error) => {
 	}
 }
 
-export const fetchOrders = (token) => {
+export const fetchOrders = (token , userId) => {
 	return dispatch => {
 		dispatch(fetchOrdersStart());
-		axios.get('https://burger-project-react-4c33a.firebaseio.com/orders.json?auth='+token)
+		const queryparam = '?auth='+ token + '&orderBy="userId"&equalTo="'+ userId +'"';
+		axios.get('https://burger-project-react-4c33a.firebaseio.com/orders.json'+queryparam)
             .then(res => {
                 const fetchOrders = []
                 for(let key in res.data){
